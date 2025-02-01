@@ -1,16 +1,17 @@
 ﻿using System;
+
 using LibSvnSharp.Interop;
 using LibSvnSharp.Interop.Apr;
 using LibSvnSharp.Interop.Svn;
 
 namespace LibSvnSharp.Implementation
 {
-    sealed class SvnClientCallbacks : IDisposable
+    internal sealed class SvnClientCallbacks : IDisposable
     {
         public readonly SafeFuncHandle<svn_cancel_func_t> libsvnsharp_cancel_func =
             new SafeFuncHandle<svn_cancel_func_t>(_libsvnsharp_cancel_func);
 
-        static IntPtr _libsvnsharp_cancel_func(IntPtr cancelBaton)
+        private static IntPtr _libsvnsharp_cancel_func(IntPtr cancelBaton)
         {
             var client = AprBaton<SvnClientContext>.Get(cancelBaton);
 
@@ -22,7 +23,7 @@ namespace LibSvnSharp.Implementation
                 if (ea.Cancel)
                 {
                     return svn_error.svn_error_create(
-                        (int) SvnErrorCode.SVN_ERR_CANCELLED,
+                        (int)SvnErrorCode.SVN_ERR_CANCELLED,
                         null,
                         "Operation canceled from OnCancel").__Instance;
                 }
@@ -42,7 +43,7 @@ namespace LibSvnSharp.Implementation
         public readonly SafeFuncHandle<svn_ra_progress_notify_func_t> libsvnsharp_progress_func =
             new SafeFuncHandle<svn_ra_progress_notify_func_t>(_libsvnsharp_progress_func);
 
-        static void _libsvnsharp_progress_func(long progress, long total, IntPtr baton, IntPtr pool)
+        private static void _libsvnsharp_progress_func(long progress, long total, IntPtr baton, IntPtr pool)
         {
             var client = AprBaton<SvnClientContext>.Get(baton);
 
@@ -61,7 +62,7 @@ namespace LibSvnSharp.Implementation
         public readonly unsafe SafeFuncHandle<svn_client_get_commit_log3_t> libsvnsharp_commit_log_func =
             new SafeFuncHandle<svn_client_get_commit_log3_t>(_libsvnsharp_commit_log_func);
 
-        static unsafe IntPtr _libsvnsharp_commit_log_func(
+        private static unsafe IntPtr _libsvnsharp_commit_log_func(
             sbyte** logMsg, sbyte** tmpFile, IntPtr commitItemsPtr, IntPtr baton, IntPtr pool)
         {
             var client = AprBaton<SvnClientContext>.Get(baton);
@@ -80,11 +81,11 @@ namespace LibSvnSharp.Implementation
                 client.HandleClientCommitting(ea);
 
                 if (ea.Cancel)
-                    return svn_error.svn_error_create((int) SvnErrorCode.SVN_ERR_CANCELLED, null, "Operation canceled from OnCommitting").__Instance;
+                    return svn_error.svn_error_create((int)SvnErrorCode.SVN_ERR_CANCELLED, null, "Operation canceled from OnCommitting").__Instance;
                 else if (ea.LogMessage != null)
                     *logMsg = tmpPool.AllocUnixString(ea.LogMessage);
                 else if (!client._noLogMessageRequired)
-                    return svn_error.svn_error_create((int) SvnErrorCode.SVN_ERR_CANCELLED, null, "Commit canceled: A logmessage is required").__Instance;
+                    return svn_error.svn_error_create((int)SvnErrorCode.SVN_ERR_CANCELLED, null, "Commit canceled: A logmessage is required").__Instance;
                 else
                     *logMsg = tmpPool.AllocString("");
 
@@ -105,7 +106,7 @@ namespace LibSvnSharp.Implementation
         public readonly SafeFuncHandle<svn_wc_notify_func2_t> svn_wc_notify_func2 =
             new SafeFuncHandle<svn_wc_notify_func2_t>(_svn_wc_notify_func2);
 
-        static void _svn_wc_notify_func2(IntPtr baton, IntPtr notifyPtr, IntPtr pool)
+        private static void _svn_wc_notify_func2(IntPtr baton, IntPtr notifyPtr, IntPtr pool)
         {
             var client = AprBaton<SvnClient>.Get(baton);
             var aprPool = new AprPool(pool, false);
@@ -129,8 +130,8 @@ namespace LibSvnSharp.Implementation
         public readonly unsafe SafeFuncHandle<svn_wc_conflict_resolver_func2_t> svn_wc_conflict_resolver_func =
             new SafeFuncHandle<svn_wc_conflict_resolver_func2_t>(_svn_wc_conflict_resolver_func);
 
-        static unsafe IntPtr _svn_wc_conflict_resolver_func(
-            void** resultPtr, IntPtr descriptionPtr, IntPtr baton, IntPtr resultPoolPtr, IntPtr scratchPoolPtr)
+        private static unsafe IntPtr _svn_wc_conflict_resolver_func(
+            IntPtr* resultPtr, IntPtr descriptionPtr, IntPtr baton, IntPtr resultPoolPtr, IntPtr scratchPoolPtr)
         {
             var client = AprBaton<SvnClient>.Get(baton);
 
@@ -139,7 +140,7 @@ namespace LibSvnSharp.Implementation
                 null,
                 apr_pool_t.__CreateInstance(resultPoolPtr));
 
-            *resultPtr = conflictResult.__Instance.ToPointer();
+            *resultPtr = (IntPtr)conflictResult.__Instance.ToPointer();
 
             var resultPool = new AprPool(resultPoolPtr, false); // Connect to parent pool
             var scratchPool = new AprPool(scratchPoolPtr, false); // Connect to parent pool
@@ -153,7 +154,7 @@ namespace LibSvnSharp.Implementation
                 client.HandleClientConflict(ea);
 
                 if (ea.Cancel)
-                    return svn_error.svn_error_create((int) SvnErrorCode.SVN_ERR_CANCELLED, null, "Operation canceled from OnConflict").__Instance;
+                    return svn_error.svn_error_create((int)SvnErrorCode.SVN_ERR_CANCELLED, null, "Operation canceled from OnConflict").__Instance;
 
                 conflictResult.choice = (svn_wc_conflict_choice_t)ea.Choice;
 

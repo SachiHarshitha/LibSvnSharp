@@ -83,7 +83,7 @@ namespace LibSvnSharp.Security
                 if (_handler.Equals(SvnAuthentication.SubversionFileUserNamePasswordHandler))
                 {
                     svn_auth.svn_auth_get_simple_provider2(
-                        (void**) &provider,
+                        (IntPtr*) &provider,
                         _callbacks.libsvnsharp_auth_plaintext_prompt.Get(),
                         _baton.Handle,
                         pool.Handle);
@@ -91,7 +91,7 @@ namespace LibSvnSharp.Security
                 else if (_handler.Equals(SvnAuthentication.SubversionWindowsUserNamePasswordHandler))
                 {
                     var err = svn_auth.svn_auth_get_platform_specific_provider(
-                        (void**) &provider,
+                        (IntPtr*) &provider,
                         provider_name: "windows",
                         provider_type: "simple",
                         pool.Handle);
@@ -102,7 +102,7 @@ namespace LibSvnSharp.Security
                 else
                 {
                     svn_auth.svn_auth_get_simple_prompt_provider(
-                        (void**) &provider,
+                        (IntPtr*) &provider,
                         _callbacks.svn_auth_simple_prompt_func.Get(),
                         _baton.Handle,
                         RetryLimit,

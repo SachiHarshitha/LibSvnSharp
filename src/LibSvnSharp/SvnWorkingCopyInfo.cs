@@ -76,7 +76,7 @@ namespace LibSvnSharp
             svn_wc_status2_t.__Internal* status2;
 
             var error = libsvnsharp_wc_private.svn_wc__status2_from_3(
-                (void**) &status2,
+                (IntPtr*) &status2,
                 svn_wc_status3_t.__CreateInstance(_status.backwards_compatibility_baton),
                 _client.CtxHandle.wc_ctx,
                 _status.local_abspath,

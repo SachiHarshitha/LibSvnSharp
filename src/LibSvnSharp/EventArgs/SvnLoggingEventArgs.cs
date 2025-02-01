@@ -1,4 +1,5 @@
 ﻿using System;
+
 using LibSvnSharp.Implementation;
 using LibSvnSharp.Interop;
 using LibSvnSharp.Interop.Apr;
@@ -9,17 +10,17 @@ namespace LibSvnSharp
 {
     public abstract class SvnLoggingEventArgs : SvnCancelEventArgs
     {
-        svn_log_entry_t _entry;
-        AprPool _pool;
+        private svn_log_entry_t _entry;
+        private AprPool _pool;
 
-        string _author;
-        string _message;
-        unsafe sbyte* _pcAuthor;
-        unsafe sbyte* _pcMessage;
-        SvnPropertyCollection _customProperties;
+        private string _author;
+        private string _message;
+        private unsafe sbyte* _pcAuthor;
+        private unsafe sbyte* _pcMessage;
+        private SvnPropertyCollection _customProperties;
 
-        SvnChangeItemCollection _changedPaths;
-        SvnChangeItem[] _changeItemsToDetach;
+        private SvnChangeItemCollection _changedPaths;
+        private SvnChangeItem[] _changeItemsToDetach;
 
         internal unsafe SvnLoggingEventArgs(svn_log_entry_t entry, AprPool pool)
         {
@@ -70,7 +71,7 @@ namespace LibSvnSharp
                     /* Get an array of sorted hash keys. */
                     apr_array_header_t sorted_paths;
 
-                    using (var comparisonFuncHandle = new SafeFuncHandle<Func_int_IntPtr_IntPtr>(
+                    using (var comparisonFuncHandle = new SafeFuncHandle<Func_int___IntPtr___IntPtr>(
                         svn_sorts.__Internal.svn_sort_compare_items_as_paths))
                     {
                         sorted_paths = svn_sorts_private.svn_sort__hash(
@@ -159,7 +160,7 @@ namespace LibSvnSharp
         public bool SubtractiveMerge { get; }
 
         /// <summary>Serves as a hashcode for the specified type</summary>
-        public override int GetHashCode() 
+        public override int GetHashCode()
         {
             return Revision.GetHashCode();
         }

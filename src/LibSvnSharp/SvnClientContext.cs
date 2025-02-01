@@ -50,7 +50,7 @@ namespace LibSvnSharp
             svn_client_ctx_t.__Internal* ctxInternal = null;
 
             // We manage the config hash ourselves
-            var error = svn_client.svn_client_create_context2((void**) &ctxInternal, null, pool.Handle);
+            var error = svn_client.svn_client_create_context2((IntPtr*) &ctxInternal, null, pool.Handle);
             if (error != null)
                 throw SvnException.Create(error);
 
@@ -228,7 +228,7 @@ namespace LibSvnSharp
             {
                 apr_hash_t.__Internal* mimetypes_map = null;
 
-                svn_error_t err = svn_io.svn_io_parse_mimetypes_file((void**) &mimetypes_map, mimetypes_file, _pool.Handle);
+                svn_error_t err = svn_io.svn_io_parse_mimetypes_file((IntPtr*) &mimetypes_map, mimetypes_file, _pool.Handle);
 
                 CtxHandle.mimetypes_map = apr_hash_t.__CreateInstance(new IntPtr(mimetypes_map));
 
@@ -313,7 +313,7 @@ namespace LibSvnSharp
 
                 apr_hash_t.__Internal* cfgPtr = null;
 
-                error = svn_config.svn_config_get_config((void**) &cfgPtr, szPath, _pool.Handle);
+                error = svn_config.svn_config_get_config((IntPtr*) &cfgPtr, szPath, _pool.Handle);
                 if (error != null)
                     throw SvnException.Create(error);
 

@@ -39,7 +39,7 @@ namespace LibSvnSharp.Implementation
                 {
                     svn_wc_context_t.__Internal* p_wc_ctx = null;
 
-                    var error = svn_wc.svn_wc_context_create((void**) &p_wc_ctx, null, pool.Handle, pool.Handle);
+                    var error = svn_wc.svn_wc_context_create((IntPtr*) &p_wc_ctx, null, pool.Handle, pool.Handle);
                     if (error != null)
                         throw SvnException.Create(error);
 

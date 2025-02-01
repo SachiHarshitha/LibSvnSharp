@@ -133,7 +133,7 @@ namespace LibSvnSharp
             svn_opt_revision_t uRev = args.Revision.Or(SvnRevision.Head).AllocSvnRevision(pool);
 
             svn_error_t r = svn_client.svn_client_update4(
-                (void**) &revs_ptr,
+                (IntPtr*) &revs_ptr,
                 aprPaths.Handle,
                 uRev,
                 (svn_depth_t) args.Depth,

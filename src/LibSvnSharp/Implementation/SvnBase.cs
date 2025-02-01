@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
+
 using LibSvnSharp.Interop;
 using LibSvnSharp.Interop.Apr;
 using LibSvnSharp.Interop.Svn;
@@ -19,11 +20,11 @@ namespace LibSvnSharp.Implementation
         internal static string _clientName;
         internal static readonly List<string> _clientNames = new List<string>();
 
-        static volatile int _ensurer = 0;
-        static readonly object _ensurerLock = new object();
+        private static volatile int _ensurer = 0;
+        private static readonly object _ensurerLock = new object();
 
-        static bool _aprInitialized;
-        static string _admDir;
+        private static bool _aprInitialized;
+        private static string _admDir;
 
         static SvnBase()
         {
@@ -100,10 +101,10 @@ namespace LibSvnSharp.Implementation
             }
         }
 
-        static readonly unsafe SafeFuncHandle<svn_error_malfunction_handler_t> libsvnsharp_malfunction_handler =
+        private static readonly unsafe SafeFuncHandle<svn_error_malfunction_handler_t> libsvnsharp_malfunction_handler =
             new SafeFuncHandle<svn_error_malfunction_handler_t>(_libsvnsharp_malfunction_handler);
 
-        static unsafe IntPtr _libsvnsharp_malfunction_handler(int canReturn, sbyte* file, int line, sbyte* expr)
+        private static unsafe IntPtr _libsvnsharp_malfunction_handler(int canReturn, sbyte* file, int line, sbyte* expr)
         {
             throw new SvnMalfunctionException(Utf8_PtrToString(expr), Utf8_PtrToString(file), line);
         }
@@ -113,7 +114,8 @@ namespace LibSvnSharp.Implementation
             svn_error.svn_error_set_malfunction_handler(libsvnsharp_malfunction_handler.Get());
         }
 
-        internal SvnBase() { }
+        internal SvnBase()
+        { }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static T[] NewSingleItemArray<T>(T value)
@@ -130,7 +132,7 @@ namespace LibSvnSharp.Implementation
             return NewSingleItemArray(value);
         }
 
-        [ThreadStatic] static AprPool _threadPool;
+        [ThreadStatic] private static AprPool _threadPool;
 
         /// <summary>Gets a small thread-local pool usable for small one shot actions</summary>
         /// <remarks>The memory allocated by the pool is only freed after the thread is closed; so use with care</remarks>
@@ -153,7 +155,7 @@ namespace LibSvnSharp.Implementation
             if (*ptr == 0)
                 return "";
 
-            return Utf8_PtrToString(ptr, strlen((byte*) ptr));
+            return Utf8_PtrToString(ptr, strlen((byte*)ptr));
         }
 
         internal static unsafe string Utf8_PtrToString(sbyte* ptr, int length)
@@ -275,6 +277,7 @@ namespace LibSvnSharp.Implementation
                     case '\\':
                     case '/':
                         return true;
+
                     case ':':
                         if (i < path.Length - 2)
                         {
@@ -282,10 +285,12 @@ namespace LibSvnSharp.Implementation
                                 return false;
                         }
                         return true;
+
                     case '+':
                     case '-':
                     case '_':
                         break;
+
                     default:
                         if (!char.IsLetter(c))
                             return true;
@@ -427,7 +432,7 @@ namespace LibSvnSharp.Implementation
             return input;
         }
 
-        static bool ContainsUpper(string value)
+        private static bool ContainsUpper(string value)
         {
             if (string.IsNullOrEmpty(value))
                 return false;
@@ -542,7 +547,7 @@ namespace LibSvnSharp.Implementation
                 long keyLen = 0;
                 svn_string_t.__Internal* propValPtr;
 
-                apr_hash.apr_hash_this(hi, (void**)&pKey, ref keyLen, (void**)&propValPtr);
+                apr_hash.apr_hash_this(hi, (IntPtr*)&pKey, ref keyLen, (IntPtr*)&propValPtr);
 
                 var propVal = svn_string_t.__CreateInstance(new IntPtr(propValPtr));
                 _properties.Add(SvnPropertyValue.Create(pKey, propVal, null));
@@ -596,7 +601,7 @@ namespace LibSvnSharp.Implementation
             return false;
         }
 
-        static char[] _invalidCharMap;
+        private static char[] _invalidCharMap;
 
         internal static char[] InvalidCharMap
         {
@@ -618,9 +623,9 @@ namespace LibSvnSharp.Implementation
                 ushort cs = c;
 
                 while (cs >= invalid.Count)
-                    invalid.Add((char) 0);
+                    invalid.Add((char)0);
 
-                invalid[cs] = (char) 1;
+                invalid[cs] = (char)1;
             }
 
             _invalidCharMap = invalid.ToArray();

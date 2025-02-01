@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="NativeBindingGenerator" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="subversion_include_dir" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\src\subversion\subversion\include</Value>
+    </Setting>
+    <Setting Name="libsvnsharp_include_dir" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\Users\sachi\OneDrive\101_CodeProjects\10_Repo\01_DotNet\LibSvnSharp\include</Value>
+    </Setting>
+    <Setting Name="apr_include_dir" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\src\subversion\apr\include</Value>
+    </Setting>
+    <Setting Name="aprutil_include_dir" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">C:\src\subversion\apr-util\include</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

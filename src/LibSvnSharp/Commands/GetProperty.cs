@@ -84,7 +84,7 @@ namespace LibSvnSharp
             }
 
             svn_error_t r = svn_client.svn_client_propget5(
-                (void**) &pHash,
+                (IntPtr*) &pHash,
                 null,
                 pName,
                 targetName,
@@ -109,7 +109,7 @@ namespace LibSvnSharp
                     long keyLen = 0;
                     svn_string_t.__Internal* propVal;
 
-                    apr_hash.apr_hash_this(hi, (void**) &pKey, ref keyLen, (void**) &propVal);
+                    apr_hash.apr_hash_this(hi, (IntPtr*) &pKey, ref keyLen, (IntPtr*) &propVal);
 
                     SvnTarget itemTarget;
                     if (prefix != null && !svn_path.svn_path_is_url(pKey))

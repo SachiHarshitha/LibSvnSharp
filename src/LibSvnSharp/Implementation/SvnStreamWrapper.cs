@@ -1,16 +1,17 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+
 using LibSvnSharp.Interop;
 using LibSvnSharp.Interop.Svn;
 
 namespace LibSvnSharp.Implementation
 {
-    class SvnStreamWrapper : IDisposable
+    internal class SvnStreamWrapper : IDisposable
     {
-        readonly AprBaton<SvnStreamWrapper> _streamBaton;
-        svn_stream_t _svnStream;
-        AprPool _pool;
+        private readonly AprBaton<SvnStreamWrapper> _streamBaton;
+        private svn_stream_t _svnStream;
+        private AprPool _pool;
 
         internal bool _written;
 
@@ -61,7 +62,7 @@ namespace LibSvnSharp.Implementation
             }
         }
 
-        unsafe void Init(bool enableRead, bool enableWrite, bool enableSeek)
+        private unsafe void Init(bool enableRead, bool enableWrite, bool enableSeek)
         {
             _svnStream = svn_io.svn_stream_create(_streamBaton.Handle, _pool.Handle);
 
@@ -85,10 +86,10 @@ namespace LibSvnSharp.Implementation
 
         internal Stream Stream { get; }
 
-        readonly unsafe SafeFuncHandle<svn_read_fn_t> _svnStreamRead =
+        private readonly unsafe SafeFuncHandle<svn_read_fn_t> _svnStreamRead =
             new SafeFuncHandle<svn_read_fn_t>(svnStreamRead);
 
-        static unsafe IntPtr svnStreamRead(IntPtr baton, sbyte* buffer, ulong* len)
+        private static unsafe IntPtr svnStreamRead(IntPtr baton, sbyte* buffer, ulong* len)
         {
             // Subversion:
             //                  Handlers are obliged to complete a read or write
@@ -109,10 +110,10 @@ namespace LibSvnSharp.Implementation
             return IntPtr.Zero;
         }
 
-        readonly unsafe SafeFuncHandle<svn_write_fn_t> _svnStreamWrite =
+        private readonly unsafe SafeFuncHandle<svn_write_fn_t> _svnStreamWrite =
             new SafeFuncHandle<svn_write_fn_t>(svnStreamWrite);
 
-        static unsafe IntPtr svnStreamWrite(IntPtr baton, sbyte* data, ulong* len)
+        private static unsafe IntPtr svnStreamWrite(IntPtr baton, sbyte* data, ulong* len)
         {
             if (*len == 0)
                 return IntPtr.Zero;
@@ -135,10 +136,10 @@ namespace LibSvnSharp.Implementation
             return IntPtr.Zero;
         }
 
-        readonly SafeFuncHandle<svn_close_fn_t> _svnStreamClose =
+        private readonly SafeFuncHandle<svn_close_fn_t> _svnStreamClose =
             new SafeFuncHandle<svn_close_fn_t>(svnStreamClose);
 
-        static IntPtr svnStreamClose(IntPtr baton)
+        private static IntPtr svnStreamClose(IntPtr baton)
         {
             SvnStreamWrapper sw = AprBaton<SvnStreamWrapper>.Get(baton);
 
@@ -151,10 +152,10 @@ namespace LibSvnSharp.Implementation
             return IntPtr.Zero;
         }
 
-        readonly unsafe SafeFuncHandle<svn_stream_mark_fn_t> _svnStreamMark =
+        private readonly unsafe SafeFuncHandle<svn_stream_mark_fn_t> _svnStreamMark =
             new SafeFuncHandle<svn_stream_mark_fn_t>(svnStreamMark);
 
-        static unsafe IntPtr svnStreamMark(IntPtr baton, void** mark, IntPtr pool_ptr)
+        private static unsafe IntPtr svnStreamMark(IntPtr baton, IntPtr* mark, IntPtr pool_ptr)
         {
             SvnStreamWrapper sw = AprBaton<SvnStreamWrapper>.Get(baton);
 
@@ -164,16 +165,16 @@ namespace LibSvnSharp.Implementation
 
                 *pos = sw.Stream.Position;
 
-                *mark = (void*)pos;
+                *mark = (IntPtr)pos;
             }
 
             return IntPtr.Zero;
         }
 
-        readonly unsafe SafeFuncHandle<svn_stream_seek_fn_t> _svnStreamSeek =
+        private readonly unsafe SafeFuncHandle<svn_stream_seek_fn_t> _svnStreamSeek =
             new SafeFuncHandle<svn_stream_seek_fn_t>(svnStreamSeek);
 
-        static unsafe IntPtr svnStreamSeek(IntPtr baton, IntPtr mark)
+        private static unsafe IntPtr svnStreamSeek(IntPtr baton, IntPtr mark)
         {
             SvnStreamWrapper sw = AprBaton<SvnStreamWrapper>.Get(baton);
 

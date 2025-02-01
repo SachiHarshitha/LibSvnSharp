@@ -2,7 +2,7 @@
 
 namespace LibSvnSharp.Interop
 {
-    struct Constants
+    internal struct Constants
     {
         public const string SVN_CONFIG_CATEGORY_SERVERS = "servers";
         public const string SVN_CONFIG_CATEGORY_CONFIG = "config";
@@ -41,7 +41,7 @@ namespace LibSvnSharp.Interop
         public const string SVN_AUTH_PARAM_CONFIG_DIR = SVN_AUTH_PARAM_PREFIX + "config-dir";
 
         /** All Subversion property names start with this. */
-        const string SVN_PROP_PREFIX = "svn:";
+        private const string SVN_PROP_PREFIX = "svn:";
 
         /** The fs revision property that stores a commit's author. */
         public const string SVN_PROP_REVISION_AUTHOR = SVN_PROP_PREFIX + "author";
@@ -53,7 +53,7 @@ namespace LibSvnSharp.Interop
         public const string SVN_PROP_REVISION_DATE = SVN_PROP_PREFIX + "date";
 
         /** Certificate authority is unknown (i.e. not trusted) */
-        public const uint SVN_AUTH_SSL_UNKNOWNCA = unchecked((uint) svn_auth_ssl_enum_t.SVN_AUTH_SSL_UNKNOWNCA);
+        public const uint SVN_AUTH_SSL_UNKNOWNCA = unchecked((uint)svn_auth_ssl_enum_t.SVN_AUTH_SSL_UNKNOWNCA);
 
         /** Properties whose values are interpreted as booleans (such as
          * svn:executable, svn:needs_lock, and svn:special) always fold their

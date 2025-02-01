@@ -77,12 +77,12 @@ namespace LibSvnSharp.Security
 
                 if (_handler.Equals(SvnAuthentication.SubversionFileUserNameHandler))
                 {
-                    svn_auth.svn_auth_get_username_provider((void**) &provider, pool.Handle);
+                    svn_auth.svn_auth_get_username_provider((IntPtr*) &provider, pool.Handle);
                 }
                 else
                 {
                     svn_auth.svn_auth_get_username_prompt_provider(
-                        (void**) &provider,
+                        (IntPtr*) &provider,
                         _callbacks.svn_auth_username_prompt_func.Get(),
                         _baton.Handle,
                         RetryLimit,

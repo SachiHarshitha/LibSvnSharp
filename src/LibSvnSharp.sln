@@ -1,11 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29519.87
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeBindingsGenerator", "NativeBindingsGenerator\NativeBindingsGenerator.csproj", "{D69133D2-B084-4B12-83CA-E0E3A1F9F015}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSvnSharp", "LibSvnSharp\LibSvnSharp.csproj", "{9D9C851A-A896-4722-A7DB-8188F9BD9E3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeBindingGenerator", "NativeBindingGenerator\NativeBindingGenerator.csproj", "{1ECB4D88-77FF-478F-AC98-C15DD342F055}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSvnSharp.Demo", "..\sample\LibSvnSharp.Demo\LibSvnSharp.Demo.csproj", "{0C3E5862-E77D-4F27-86D2-1A77CE9420F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSvnSharp.Demo.Browser", "..\sample\LibSvnSharp.Demo.Browser\LibSvnSharp.Demo.Browser.csproj", "{1AE2D035-2F7F-4FC6-9F71-41BBEABF3CFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibSvnSharp.Demo.Desktop", "..\sample\LibSvnSharp.Demo.Desktop\LibSvnSharp.Demo.Desktop.csproj", "{92440411-7C0E-47D3-A1C9-1035EE109B31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +29,22 @@ Global
 		{9D9C851A-A896-4722-A7DB-8188F9BD9E3F}.Debug|x64.Build.0 = Debug|x64
 		{9D9C851A-A896-4722-A7DB-8188F9BD9E3F}.Release|x64.ActiveCfg = Release|x64
 		{9D9C851A-A896-4722-A7DB-8188F9BD9E3F}.Release|x64.Build.0 = Release|x64
+		{1ECB4D88-77FF-478F-AC98-C15DD342F055}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1ECB4D88-77FF-478F-AC98-C15DD342F055}.Debug|x64.Build.0 = Debug|Any CPU
+		{1ECB4D88-77FF-478F-AC98-C15DD342F055}.Release|x64.ActiveCfg = Release|Any CPU
+		{1ECB4D88-77FF-478F-AC98-C15DD342F055}.Release|x64.Build.0 = Release|Any CPU
+		{0C3E5862-E77D-4F27-86D2-1A77CE9420F5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0C3E5862-E77D-4F27-86D2-1A77CE9420F5}.Debug|x64.Build.0 = Debug|Any CPU
+		{0C3E5862-E77D-4F27-86D2-1A77CE9420F5}.Release|x64.ActiveCfg = Release|Any CPU
+		{0C3E5862-E77D-4F27-86D2-1A77CE9420F5}.Release|x64.Build.0 = Release|Any CPU
+		{1AE2D035-2F7F-4FC6-9F71-41BBEABF3CFE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1AE2D035-2F7F-4FC6-9F71-41BBEABF3CFE}.Debug|x64.Build.0 = Debug|Any CPU
+		{1AE2D035-2F7F-4FC6-9F71-41BBEABF3CFE}.Release|x64.ActiveCfg = Release|Any CPU
+		{1AE2D035-2F7F-4FC6-9F71-41BBEABF3CFE}.Release|x64.Build.0 = Release|Any CPU
+		{92440411-7C0E-47D3-A1C9-1035EE109B31}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{92440411-7C0E-47D3-A1C9-1035EE109B31}.Debug|x64.Build.0 = Debug|Any CPU
+		{92440411-7C0E-47D3-A1C9-1035EE109B31}.Release|x64.ActiveCfg = Release|Any CPU
+		{92440411-7C0E-47D3-A1C9-1035EE109B31}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

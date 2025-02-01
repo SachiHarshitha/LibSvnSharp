@@ -90,7 +90,7 @@ namespace LibSvnSharp
             svn_opt_revision_t rev = args.Revision.Or(target.Revision).AllocSvnRevision(scratchPool);
 
             svn_error_t r = svn_client.svn_client_cat3(
-                (void**) props,
+                (IntPtr*) props,
                 wrapper.Handle,
                 target.AllocAsString(scratchPool, true),
                 pegRev,

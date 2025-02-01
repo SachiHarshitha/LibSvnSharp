@@ -11,13 +11,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\NativeBindingsGenerator\bin\$(Configuration)\Generated Files\AprUnmanagedApi.cs" Link="Interop\AprUnmanagedApi.cs" />
-    <Compile Include="..\NativeBindingsGenerator\bin\$(Configuration)\Generated Files\Std.cs" Link="Interop\Std.cs" />
-    <Compile Include="..\NativeBindingsGenerator\bin\$(Configuration)\Generated Files\SvnUnmanagedApi.cs" Link="Interop\SvnUnmanagedApi.cs" />
+    <Compile Include="..\NativeBindingGenerator\bin\$(Configuration)\Generated Files\AprUnmanagedApi.cs" Link="Interop\AprUnmanagedApi.cs" />
+    <Compile Include="..\NativeBindingGenerator\bin\$(Configuration)\Generated Files\Std.cs" Link="Interop\Std.cs" />
+    <Compile Include="..\NativeBindingGenerator\bin\$(Configuration)\Generated Files\SvnUnmanagedApi.cs" Link="Interop\SvnUnmanagedApi.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.5.3" />
+    <PackageReference Include="CppSharp" Version="1.1.5.3168" />
+    <PackageReference Include="CppSharp.Runtime" Version="1.1.5.3168" />
+    <PackageReference Include="System.Memory" Version="4.6.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using System;
+
 using LibSvnSharp.Implementation;
 using LibSvnSharp.Interop;
 using LibSvnSharp.Interop.Apr;
@@ -6,13 +7,13 @@ using LibSvnSharp.Interop.Apr.Delegates;
 
 namespace LibSvnSharp
 {
-    sealed class SvnExceptionContainer : IDisposable
+    internal sealed class SvnExceptionContainer : IDisposable
     {
-        const long _idValue = 0xFF00FFEE;
+        private const long _idValue = 0xFF00FFEE;
 
-        AprBaton<SvnExceptionContainer> _baton;
-        long _id;
-        Exception _exception;
+        private AprBaton<SvnExceptionContainer> _baton;
+        private long _id;
+        private Exception _exception;
 
         public SvnExceptionContainer(Exception ex, apr_pool_t pool)
         {
@@ -57,10 +58,10 @@ namespace LibSvnSharp
             _cleanupNullHandle.Dispose();
         }
 
-        readonly SafeFuncHandle<Func_int_IntPtr> _cleanupHandle =
-            new SafeFuncHandle<Func_int_IntPtr>(cleanup_handler);
+        private readonly SafeFuncHandle<Func_int___IntPtr> _cleanupHandle =
+            new SafeFuncHandle<Func_int___IntPtr>(cleanup_handler);
 
-        static int cleanup_handler(IntPtr data)
+        private static int cleanup_handler(IntPtr data)
         {
             var ptr = AprBaton<SvnExceptionContainer>.Get(data);
 
@@ -74,7 +75,7 @@ namespace LibSvnSharp
             return 0;
         }
 
-        readonly SafeFuncHandle<Func_int_IntPtr> _cleanupNullHandle =
-            new SafeFuncHandle<Func_int_IntPtr>(apr_pools.__Internal.apr_pool_cleanup_null);
+        private readonly SafeFuncHandle<Func_int___IntPtr> _cleanupNullHandle =
+            new SafeFuncHandle<Func_int___IntPtr>(apr_pools.__Internal.apr_pool_cleanup_null);
     }
 }

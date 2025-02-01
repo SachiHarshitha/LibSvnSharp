@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Runtime.InteropServices;
+
 using LibSvnSharp.Implementation;
 using LibSvnSharp.Interop;
 using LibSvnSharp.Interop.Apr;
@@ -12,18 +13,20 @@ namespace LibSvnSharp.Security
     /// <summary>Container for all subversion authentication settings on a client</summary>
     public class SvnAuthentication : SvnBase
     {
-        readonly SvnClientContext _clientContext;
-        readonly Dictionary<Delegate, ISvnAuthWrapper> _wrappers;
-        readonly List<ISvnAuthWrapper> _handlers;
-        readonly AprPool _authPool;
-        readonly AprPool _parentPool;
-        ICredentials _defaultCredentials;
+        private readonly SvnClientContext _clientContext;
+        private readonly Dictionary<Delegate, ISvnAuthWrapper> _wrappers;
+        private readonly List<ISvnAuthWrapper> _handlers;
+        private readonly AprPool _authPool;
+        private readonly AprPool _parentPool;
+        private ICredentials _defaultCredentials;
+
         //SvnCredentialWrapper _credentialWrapper;
-        bool _readOnly;
-        int _cookie;
-        svn_auth_baton_t _currentBaton;
-        string _forcedUser;
-        string _forcedPassword;
+        private bool _readOnly;
+
+        private int _cookie;
+        private svn_auth_baton_t _currentBaton;
+        private string _forcedUser;
+        private string _forcedPassword;
 
         internal SvnAuthentication(SvnClientContext context, AprPool parentPool)
         {
@@ -323,7 +326,7 @@ namespace LibSvnSharp.Security
             AddWindowsSubversionAuthenticationHandlers();
         }
 
-        void AddWindowsSubversionAuthenticationHandlers()
+        private void AddWindowsSubversionAuthenticationHandlers()
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return;
@@ -353,7 +356,7 @@ namespace LibSvnSharp.Security
 
             svn_auth_baton_t.__Internal* rsltPtr = null;
 
-            svn_auth.svn_auth_open((void**) &rsltPtr, authArray.Handle, _authPool.Handle);
+            svn_auth.svn_auth_open((IntPtr*)&rsltPtr, authArray.Handle, _authPool.Handle);
 
             var rslt = svn_auth_baton_t.__CreateInstance(new IntPtr(rsltPtr));
 
@@ -390,19 +393,19 @@ namespace LibSvnSharp.Security
             return rslt;
         }
 
-        static void ImpSubversionFileUserNameHandler(object sender, SvnUserNameEventArgs e) => e.Break = true;
+        private static void ImpSubversionFileUserNameHandler(object sender, SvnUserNameEventArgs e) => e.Break = true;
 
-        static void ImpSubversionFileUserNamePasswordHandler(object sender, SvnUserNamePasswordEventArgs e) => e.Break = true;
+        private static void ImpSubversionFileUserNamePasswordHandler(object sender, SvnUserNamePasswordEventArgs e) => e.Break = true;
 
-        static void ImpSubversionWindowsFileUserNamePasswordHandler(object sender, SvnUserNamePasswordEventArgs e) => e.Break = true;
+        private static void ImpSubversionWindowsFileUserNamePasswordHandler(object sender, SvnUserNamePasswordEventArgs e) => e.Break = true;
 
-        static void ImpSubversionFileSslServerTrustHandler(object sender, SvnSslServerTrustEventArgs e) => e.Break = true;
+        private static void ImpSubversionFileSslServerTrustHandler(object sender, SvnSslServerTrustEventArgs e) => e.Break = true;
 
-        static void ImpSubversionWindowsSslServerTrustHandler(object sender, SvnSslServerTrustEventArgs e) => e.Break = true;
+        private static void ImpSubversionWindowsSslServerTrustHandler(object sender, SvnSslServerTrustEventArgs e) => e.Break = true;
 
-        static void ImpSubversionFileSslClientCertificateHandler(object sender, SvnSslClientCertificateEventArgs e) => e.Break = true;
+        private static void ImpSubversionFileSslClientCertificateHandler(object sender, SvnSslClientCertificateEventArgs e) => e.Break = true;
 
-        static apr_hash_t get_cache(svn_auth_baton_t baton)
+        private static apr_hash_t get_cache(svn_auth_baton_t baton)
         {
             if (baton == null)
                 throw new ArgumentNullException(nameof(baton));
@@ -410,7 +413,7 @@ namespace LibSvnSharp.Security
             return baton.creds_cache;
         }
 
-        static unsafe apr_hash_t clone_credentials(apr_hash_t from, apr_hash_t to, AprPool pool)
+        private static unsafe apr_hash_t clone_credentials(apr_hash_t from, apr_hash_t to, AprPool pool)
         {
             if (from == null)
                 throw new ArgumentNullException(nameof(from));
@@ -428,7 +431,7 @@ namespace LibSvnSharp.Security
             {
                 for (var hi = apr_hash.apr_hash_first(tmpPool.Handle, from); hi != null; hi = apr_hash.apr_hash_next(hi))
                 {
-                    apr_hash.apr_hash_this(hi, (void**) &pKey, ref len, &pValue);
+                    apr_hash.apr_hash_this(hi, (IntPtr*)&pKey, ref len, (IntPtr*)&pValue);
 
                     pNewValue = null;
 

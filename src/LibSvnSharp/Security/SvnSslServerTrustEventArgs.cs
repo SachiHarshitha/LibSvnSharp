@@ -77,12 +77,12 @@ namespace LibSvnSharp.Security
 
                 if (_handler.Equals(SvnAuthentication.SubversionFileSslServerTrustHandler))
                 {
-                    svn_auth.svn_auth_get_ssl_server_trust_file_provider((void**) &provider, pool.Handle);
+                    svn_auth.svn_auth_get_ssl_server_trust_file_provider((IntPtr*) &provider, pool.Handle);
                 }
                 else if (_handler.Equals(SvnAuthentication.SubversionWindowsSslServerTrustHandler))
                 {
                     var err = svn_auth.svn_auth_get_platform_specific_provider(
-                        (void**) &provider,
+                        (IntPtr*) &provider,
                         provider_name: "windows",
                         provider_type: "ssl_server_trust",
                         pool.Handle);
@@ -93,7 +93,7 @@ namespace LibSvnSharp.Security
                 else
                 {
                     svn_auth.svn_auth_get_ssl_server_trust_prompt_provider(
-                        (void**) &provider,
+                        (IntPtr*) &provider,
                         _callbacks.svn_auth_ssl_server_trust_prompt_func.Get(),
                         _baton.Handle,
                         pool.Handle);

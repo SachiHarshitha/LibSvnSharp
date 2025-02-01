@@ -41,12 +41,12 @@ namespace LibSvnSharp.Security
 
                 if (_handler.Equals(SvnAuthentication.SubversionFileSslClientCertificateHandler))
                 {
-                    svn_auth.svn_auth_get_ssl_client_cert_file_provider((void**) &provider, pool.Handle);
+                    svn_auth.svn_auth_get_ssl_client_cert_file_provider((IntPtr*) &provider, pool.Handle);
                 }
                 else
                 {
                     svn_auth.svn_auth_get_ssl_client_cert_prompt_provider(
-                        (void**) &provider,
+                        (IntPtr*) &provider,
                         _callbacks.svn_auth_ssl_client_cert_prompt_func.Get(),
                         _baton.Handle,
                         RetryLimit,
